@@ -1,0 +1,65 @@
+@import '../../constants/style.sass'
+.message
+    display: flex
+    padding: 10px
+    &-avatar
+        border-radius: 50%
+        width: 35px
+        height: 35px
+
+    &-main
+        padding: 12px 18px 6px 18px
+        margin: 0px 10px
+
+        &-author
+            font-family: 'Poppins', sans-serif
+            font-size: 16px
+            font-weight: 600
+            color: $blue-color
+        &-text
+            font-family: 'Poppins', sans-serif
+            font-size: 13px
+            color: rgba(0, 0, 0, 0.85)
+        &-date
+            @include grey-small-text
+.enemy-message
+    justify-content: flex-end
+    &-main
+        background-color: #d6affa
+
+        border-radius: 16px 0px 16px 16px
+
+.my-message
+    justify-content: flex-start
+    &-main
+        background-color: #b0fac4
+
+        border-radius: 0px 16px 16px 16px
+
+.chat
+    background: #FAFAFA //Background for chat
+    width: 100%
+    // min-height: 600px
+    padding: 20px 10px
+    border-radius: 12px
+    display: flex
+    flex-direction: column
+    justify-content: flex-end
+    &-send
+        display: flex
+        padding: 0px 10px
+.messages-container::-webkit-scrollbar
+    width: 6px
+    background-color: #dededead
+    right: -10px
+    border-radius: 9em
+
+.messages-container::-webkit-scrollbar-thumb
+    background-color: #31313100
+    border-radius: 9em
+.messages-container::-webkit-scrollbar-thumb:hover
+    background-color: #7a7a7a80
+    border-radius: 9em
+.messages-container
+    overflow-y: scroll
+    height: 600px

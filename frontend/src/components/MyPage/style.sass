@@ -1,0 +1,29 @@
+@import '../../constants/style.sass'
+.my-page
+    &-header
+        background-color: rgba(95, 86, 77, .32)
+        min-height: 300px
+        display: flex
+        align-items: flex-end
+        border-radius: $standart-border-radius
+        margin-bottom: 14px
+
+        &-main
+            height: 100px
+            width: 100%
+            padding: 20px
+            background-color: $white-color
+            position: relative
+            display: flex
+            align-items: flex-start
+            border-radius: $standart-border-radius
+            &-avatar
+                width: 150px
+                height: 150px
+                position: relative
+                top: -90px
+                border-radius: 50%
+                margin-right: 12px
+                border: 5px solid $white-color
+            &-author
+                @include large-text

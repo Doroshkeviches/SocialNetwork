@@ -1,0 +1,28 @@
+@import '../../../../constants/style.sass'
+.post-comment
+    display: flex
+    margin-top: 10px
+    &-container
+        padding-top: 12px
+    &-avatar
+        border-radius: 50%
+
+        &-container
+            width: 35px
+            height: 35px
+            min-width: 35px
+            min-height: 35px
+            margin-right: 8px
+    &-main
+        &-author
+            @include default-text
+            font-weight: 600
+
+        &-container
+        &-text
+            @include default-text
+
+        &-date
+            @include grey-small-text
+    &-input
+        display: flex

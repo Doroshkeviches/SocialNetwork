@@ -1,0 +1,23 @@
+@import '../../../../constants/style.sass'
+
+.new-post
+    width: 100%
+    position: relative
+    padding: 20px
+    @include main-background
+    display: flex
+    flex-direction: column
+    &-main
+        display: flex
+        align-items: flex-start
+
+        margin-bottom: 20px
+        &-avatar
+            max-width: 35px
+            border-radius: 50%
+            margin-right: 10px
+    &-upload
+        padding-left: 45px
+        display: flex 
+        justify-content: space-between
+        align-items: flex-start
