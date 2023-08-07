@@ -8,6 +8,7 @@ import MyMessage from './MyMessage';
 import { Input, Button, Space } from 'antd';
 import { SendOutlined } from '@ant-design/icons'
 import { useParams } from 'react-router';
+import Loading from '../Loading/Loading';
 
 
 const Chat = () => {
@@ -15,11 +16,12 @@ const Chat = () => {
     console.log(params)
     const id = params.id
     const { author, avatar } = useUser()
+    const [loading, setIsLoading] = useState(false)
     const [messages, setMessages] = useState([])
     const [value, setValue] = useState('')
     const chatRef = useRef(null)
     useEffect(() => {
-        chatRef.current.scrollIntoView() //прокрутка до нового сообщения типо работает но выглядит не супер )) на невысоких устройствах ваще говно
+        chatRef.current?.scrollIntoView() //прокрутка до нового сообщения типо работает но выглядит не супер )) на невысоких устройствах ваще говно
     }, [messages])
     useEffect(() => {
         console.log('useEffect ID')
@@ -28,7 +30,10 @@ const Chat = () => {
         socket.on('joined', async (roomId) => {
             await fetch(url + `/chats?room=${roomId}`)
                 .then(res => res.json())
-                .then(data => setMessages(data.messages))
+                .then(data => {
+                    setMessages(data.messages)
+                    setIsLoading(true)
+                })
         })
     }, [id])
     useEffect(() => {
@@ -38,7 +43,7 @@ const Chat = () => {
             console.log(mes)
             setMessages(prev => [...prev, mes])
         })
-        chatRef.current.scrollIntoView()
+        chatRef.current?.scrollIntoView()
     }, [])
 
 
@@ -55,17 +60,25 @@ const Chat = () => {
         })
         setValue('')
     }
+
     return (
         <div className='chat'>
             <div className='messages-container'>
-                {messages.map(it => {
-                    return (
-                        it.author === author ?
-                            <MyMessage key={it.date} it={it} />
-                            :
-                            <EnemyMessage key={it.date} it={it} />
-                    )
-                })}
+                {loading ?
+
+                    messages.map(it => {
+                        return (
+                            it.author === author ?
+                                <MyMessage key={it.date} it={it} />
+                                :
+                                <EnemyMessage key={it.date} it={it} />
+                        )
+                    })
+
+                    :
+                    <Loading/>
+                }
+
                 <div ref={chatRef}></div>
             </div>
 
