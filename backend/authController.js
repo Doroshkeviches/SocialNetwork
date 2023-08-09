@@ -1,27 +1,10 @@
 const User = require('./models/User');
 const bcrypt = require('bcrypt');
-const { secret } = require('./config');
-const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const Post = require('./models/Post');
 const Chats = require('./models/Chats');
-function generateAccessToken(username) {
-  return jwt.sign({
-    username
-  },
-    secret,
-    {
-      expiresIn: '24h'
-    });
-}
-
-function DateConverter() {
-  const today = new Date();
-  const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-  const now = today.toLocaleString('en-GB', options);
-  return now
-}
-class authController {
+const generateAccessToken = require('./utils')
+class AuthController {
   async registration(req, res) {
     try {
       const errors = validationResult(req);
@@ -47,6 +30,7 @@ class authController {
       res.status(400).json({ message: 'Registration error', e });
     }
   }
+
   async authorization(req, res) {
     try {
       const { username, password } = req.body;
@@ -66,6 +50,7 @@ class authController {
       res.status(400).json({ message: 'Authorization error', e });
     }
   }
+
   async addNewPost(req, res) {
     try {
       const {
@@ -92,14 +77,23 @@ class authController {
       res.status(400).json({ message: 'Authorization error', e });
     }
   }
+
   async getAllPosts(req, res) {
     try {
-      const posts = await Post.find({})
-      res.json(posts)
+      const limit = req.query.limit || 5
+      const page = req.query.page || 1
+      const skip = (page - 1) * limit
+      const posts = await Post.find({}).sort({ "date": -1 }).skip(skip).limit(limit)
+      const count = await Post.count()
+      res.json({
+        count,
+        posts: posts
+      })
     } catch (e) {
       res.status(400).json({ message: 'Authorization error', e });
     }
   }
+
   async getMyPosts(req, res) {
     try {
       const { author } = req.query
@@ -111,6 +105,7 @@ class authController {
       res.status(400).json({ message: 'Authorization error', e });
     }
   }
+
   async increasePostLike(req, res) {
     try {
       const {
@@ -131,6 +126,7 @@ class authController {
       res.status(400).json({ message: 'Authorization error', e });
     }
   }
+
   async decreasePostLike(req, res) {
     try {
       const {
@@ -151,6 +147,7 @@ class authController {
       res.status(400).json({ message: 'error', e });
     }
   }
+
   async addComment(req, res) {
     try {
       const {
@@ -166,7 +163,8 @@ class authController {
             avatar,
             text,
             date: Date.now()
-          }
+          },
+          $position: 0
         }
       })
       res.json({ message: 'comment saved' })
@@ -174,6 +172,7 @@ class authController {
       res.status(400).json({ message: 'error', e });
     }
   }
+
   async getRoomId(req, res) {
     try {
       const { room } = req.query
@@ -185,6 +184,7 @@ class authController {
       res.status(400).json({ message: 'Authorization error', e });
     }
   }
+
   async getAllUsers(req, res) {
     try {
       const chat = await User.find({})
@@ -194,4 +194,5 @@ class authController {
     }
   }
 }
-module.exports = new authController();
+
+module.exports = new AuthController();

@@ -11,9 +11,8 @@ const MyPagePostList = () => {
         fetch(url + `/getMyPosts?author=${author}`)
             .then(res => res.json())
             .then(data => {
-                let copy = Object.assign([], data);
-                copy.sort((a, b) => b.date - a.date);
-                setPostData(copy)
+                data.sort((a, b) => b.date - a.date);
+                setPostData(data)
             })
     }, [])
 
