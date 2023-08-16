@@ -1,0 +1,37 @@
+@import '../../constants/style.sass'
+.authorization-container
+    width: 20%
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    display: flex
+    flex-direction: column
+    align-items: center
+    padding: 25px 25px
+    border-radius: 20px
+    box-shadow: 0px 0px 25px 5px rgba(0, 0, 0, 0.1)
+.authorization
+    &-login
+        width: 100%
+        margin-bottom: $standart-bottom-margin
+    &-title
+        @include large-text
+        margin-bottom: $standart-bottom-margin
+    &-password
+        width: 100%
+        margin-bottom: 5px
+    &-error
+        color: #cc2525
+        font-family: 'Poppins', sans-serif
+        margin-bottom: 12px
+    &-registration
+        width: 100%
+        text-align: end
+        margin-bottom: $standart-bottom-margin
+        color: $link-color
+
+    &-btn
+
+.width100
+    width: 100%

@@ -1,0 +1,30 @@
+@import '../../constants/style.sass'
+.messenger
+    overflow-y: scroll
+    box-shadow: 0 0 0 1px #dce1e6
+    border-radius: 12px
+    background-color: #ffffff
+
+    &-contacts
+        padding: 10px
+        display: flex
+        flex-direction: column
+        &-user
+            background-color: #f7f7f7
+            border-radius: 12px
+            display: flex
+            align-items: center
+            padding: 10px
+            margin: 5px 0px
+            &-name
+                font-family: 'Poppins', sans-serif
+                font-size: 18px
+                font-weight: 500
+                color: #000000
+
+            &-avatar
+                border-radius: 50%
+                width: 50px
+                margin-right: 10px
+.messenger::-webkit-scrollbar
+    width: 0px

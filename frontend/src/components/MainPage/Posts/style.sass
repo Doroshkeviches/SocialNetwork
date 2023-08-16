@@ -1,0 +1,53 @@
+@import '../../../constants/style.sass'
+
+.post
+    position: relative
+    padding: 20px
+    margin-bottom: 14px
+    border-radius: 24px
+    background-color: $white-color
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1)
+    &-header
+        display: flex
+        align-items: center
+        margin-bottom: 6px
+        &-avatar
+            border-radius: 50%
+            width: 50px
+            height: 50px
+            margin-right: 8px
+        &-author
+
+            &-name
+                @include default-text
+                font-weight: 600
+            &-date
+                @include default-text
+    &-main
+        margin-bottom: 12px
+        &-text
+            @include default-text
+            margin-bottom: 12px
+        &-image
+            width: 100%
+            border-radius: 12px
+    &-footer
+        display: flex
+        margin-bottom: 12px
+        &-icon
+            cursor: pointer
+            padding: 5px 0px
+            border-radius: 24px
+            background-color: $color-grey
+            display: flex
+            justify-content: center
+            align-items: center
+            @include default-text
+            max-width: 70px
+            width: 100%
+            margin-right: 10px
+        &-line 
+            position: absolute
+            left: 0px
+            width: 100%
+            border-top: 1px solid $color-grey
