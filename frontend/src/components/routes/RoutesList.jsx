@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Error from '../Error404';
 import { routes } from './routes';
 import Layout from '../../layout/Layout';
@@ -10,8 +10,8 @@ const RoutesList = () => {
     return (
         <BrowserRouter>
             <Routes>
-            <Route path='/registration' element={<Registration />} />
-            <Route path='/authorization' element={<Authorization />} />
+                <Route path='/registration' element={<Registration />} />
+                <Route path='/authorization' element={<Authorization />} />
                 {routes.map(route => {
                     return (
                         <Route

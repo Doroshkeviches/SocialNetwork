@@ -17,7 +17,7 @@ const Registration = () => {
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (isAuth) {
-            navigate('/main')
+            navigate('/')
         }
     }, []) //типо если чел уже авторизован и нажимает кнопку "назад" то не появлялось снова страница регистрации 
     function handleRegistration(username, password) {
@@ -37,9 +37,9 @@ const Registration = () => {
                 if (data.isRegistered) {
                     dispatch(setNameRedux({
                         avatar: 'https://vk.com/images/camera_200.png',
-                        username
+                        author: username
                     }))
-                    navigate('/main')
+                    navigate('/')
                 }
                 setRegistrationError(data.message)
             })
