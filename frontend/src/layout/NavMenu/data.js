@@ -13,7 +13,7 @@ export const data = [
     {
         icon: <FeedIcon />,
         title: 'Новости',
-        path: "/main"
+        path: "/"
     },
     {
         icon: <MailOutlineOutlinedIcon />,
