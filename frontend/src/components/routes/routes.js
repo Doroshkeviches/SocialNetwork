@@ -9,7 +9,7 @@ export const routes = [
         component: MyPage
     },
     {
-        path: '/main',
+        path: '/',
         component: MainPage
     },
     {
