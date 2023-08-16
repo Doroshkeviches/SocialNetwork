@@ -3,16 +3,25 @@ import './style.sass'
 import Chat from '../Chat/Chat';
 import { url } from '../../constants';
 import useUser from '../hooks/useUser';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import socket from '../../socket';
+import useAuth from '../hooks/useAuth';
 const Messenger = () => {
     const [id, setId] = useState()
     const [users, setUsers] = useState([])
     const { author } = useUser()
+    const isAuth = useAuth()
+    const navigate = useNavigate()
+
     useEffect(() => {
         fetch(url + '/getAllUsers')
             .then(res => res.json())
             .then(data => setUsers(data))
+    }, [])
+    useEffect(() => {
+        if (!isAuth) {
+            navigate('/authorization')
+        }
     }, [])
     function getRoomId(str) {
         const arr = [str, author]
