@@ -8,7 +8,7 @@ const http = require("http").createServer(app)
 const Chats = require('./models/Chats')
 const io = require('socket.io')(http, {
   cors: {
-    origin: "http://localhost:5000",
+    origin: "https://test3-wwwz.onrender.com",
     methods: ["GET", "POST"]
   }
 })
