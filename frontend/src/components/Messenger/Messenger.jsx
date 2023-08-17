@@ -25,7 +25,7 @@ const Messenger = () => {
     }, [])
     function getRoomId(str) {
         const arr = [str, author]
-        return arr.sort((a, b) => a - b).join('')
+        return arr.sort((a, b) => a > b ? 1 : -1).join('')
     }
     return (
         <div className='messenger'>
