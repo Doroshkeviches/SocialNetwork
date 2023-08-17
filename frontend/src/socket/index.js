@@ -7,6 +7,6 @@ const options = {
     transports: ["websocket"]
 }
 
-const socket = io('http://localhost:5000', options);
+const socket = io('https://test3-wwwz.onrender.com', options);
 
 export default socket;
