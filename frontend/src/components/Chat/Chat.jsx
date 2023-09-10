@@ -9,9 +9,17 @@ import { Input, Button, Space } from 'antd';
 import { SendOutlined } from '@ant-design/icons'
 import { useParams } from 'react-router';
 import Loading from '../Loading/Loading';
+import { BsCameraVideo, BsPhone } from 'react-icons/bs'
+import { useAppDispatch } from '../../store';
+import { useSelector } from 'react-redux';
+import { callDataRedux, setCallDataRedux } from '../../store/toolkitReducer';
+import { Link } from 'react-router-dom';
+import VideoChat from '../VideoChat/VideoChat';
+
 
 
 const Chat = () => {
+    const dispatch = useAppDispatch()
     const params = useParams()
     console.log(params)
     const id = params.id
@@ -19,12 +27,12 @@ const Chat = () => {
     const [loading, setIsLoading] = useState(false)
     const [messages, setMessages] = useState([])
     const [value, setValue] = useState('')
+    const callTo = useSelector(callDataRedux)
     const chatRef = useRef(null)
     useEffect(() => {
         chatRef.current?.scrollIntoView() //прокрутка до нового сообщения типо работает но выглядит не супер )) на невысоких устройствах ваще говно
     }, [messages])
     useEffect(() => {
-        console.log('useEffect ID')
         socket.emit('join', id)
 
         socket.on('joined', async (roomId) => {
@@ -37,8 +45,6 @@ const Chat = () => {
         })
     }, [id])
     useEffect(() => {
-        console.log('useEffect')
-
         socket.on('message', (mes) => {   //почему оно срабатывает каждый раз а не только при загрузке страницы, ну типо сообщения приходят все гуд, но я немного не понял как это работает под капотом , будет збс если ты пояснишь))
             console.log(mes)
             setMessages(prev => [...prev, mes])
@@ -60,9 +66,10 @@ const Chat = () => {
         })
         setValue('')
     }
-
     return (
         <div className='chat'>
+            <VideoChat/>
+            
             <div className='messages-container'>
                 {loading ?
 
@@ -76,7 +83,7 @@ const Chat = () => {
                     })
 
                     :
-                    <Loading/>
+                    <Loading />
                 }
 
                 <div ref={chatRef}></div>

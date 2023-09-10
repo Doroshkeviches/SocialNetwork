@@ -2,6 +2,7 @@ import MainPage from "../MainPage";
 import Chat from "../Chat";
 import MyPage from "../MyPage";
 import Messenger from "../Messenger";
+import VideoChat from "../VideoChat/VideoChat";
 
 export const routes = [
     {
@@ -20,4 +21,9 @@ export const routes = [
         path: '/messages/:id',
         component: Chat
     },
+    {
+        path: '/videoChat',
+        component: VideoChat
+    },
+    
 ]

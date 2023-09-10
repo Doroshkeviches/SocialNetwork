@@ -6,7 +6,8 @@ const options = {
     timeout: 10000, // before connect_error and connect_timeout are emitted.
     transports: ["websocket"]
 }
-
-const socket = io('https://test3-wwwz.onrender.com', options);
+const urlLoacal = "http://localhost:5000"
+const urlDeploy = 'https://test3-wwwz.onrender.com'
+const socket = io(urlDeploy);
 
 export default socket;
