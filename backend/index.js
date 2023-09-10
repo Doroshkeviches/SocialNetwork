@@ -1,5 +1,5 @@
 const express = require('express');
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 const mongoose = require('mongoose');
 const { MongoClient } = require('mongodb')
 const authRouter = require('./authRouter');
@@ -76,21 +76,29 @@ io.on('connection', (socket) => {
     }
   }
   socket
-    .on('init', (id) => {
+    .on('init', (value) => {
+      id = value
       users[id] = socket
       console.log(id, 'connected')
       socket.emit('init', { id })
     })
     .on('request', (data) => {
+      console.log(data, 'request')
       emit(data.to, 'request', { from: id })
     })
     .on('call', (data) => {
+      console.log(data, 'call')
+
       emit(data.to, 'call', { ...data, from: id })
     })
     .on('end', (data) => {
+      console.log(data, 'end')
+
       emit(data.to, 'end')
     })
     .on('disconnect', () => {
+      console.log('disconect')
+
       delete users[id]
       console.log(id, 'disconnected')
     })

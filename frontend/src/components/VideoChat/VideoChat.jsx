@@ -21,6 +21,7 @@ export default function VideoChat() {
   const [config, setConfig] = useState(null)
   useEffect(() => {
     socket.on('request', ({ from }) => {
+      console.log(from,'from')
       setCallFrom(from)
       setShowModal(true)
     })
@@ -44,6 +45,7 @@ export default function VideoChat() {
   }, [pc])
 
   const startCall = (isCaller, remoteId, config) => {
+    console.log(config)
     setShowModal(false)
     setCalling(true)
     setConfig(config)

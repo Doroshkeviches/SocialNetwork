@@ -12,7 +12,7 @@ export const MainWindow = ({ startCall }) => {
     useEffect(() => {
         const id = author
         socket
-            .on('init', ({ id }) => {})
+            .on(() => console.log(id))
             .emit('init', id) //сюда я передаю айди юзера по которому он подключается в сокеты
     }, [])
 
