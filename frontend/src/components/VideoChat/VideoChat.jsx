@@ -61,7 +61,6 @@ export default function VideoChat() {
         setCalling(false)
       })
       .start(isCaller, config)
-    console.log(_pc.getPeerConnections())
     setPc(_pc)
   }
 
