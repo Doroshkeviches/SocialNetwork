@@ -76,8 +76,7 @@ io.on('connection', (socket) => {
     }
   }
   socket
-    .on('init', () => {
-      id = nanoid(5)
+    .on('init', (id) => {
       users[id] = socket
       console.log(id, 'connected')
       socket.emit('init', { id })
