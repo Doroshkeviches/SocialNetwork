@@ -8,7 +8,7 @@ const http = require("http").createServer(app)
 const Chats = require('./models/Chats')
 const io = require('socket.io')(http, {
   cors: {
-    origin: "https://social-network-two-iota.vercel.app",
+    origin: "https://test3-wwwz.onrender.com",
     methods: ["GET", "POST"]
   }
 })

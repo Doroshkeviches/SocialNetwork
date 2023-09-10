@@ -8,6 +8,6 @@ const options = {
 }
 const urlLoacal = "http://localhost:5000"
 const urlDeploy = 'https://test3-wwwz.onrender.com'
-const socket = io(urlDeploy);
+const socket = io(urlDeploy, options);
 
 export default socket;
