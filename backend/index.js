@@ -8,7 +8,7 @@ const http = require("http").createServer(app)
 const Chats = require('./models/Chats')
 const io = require('socket.io')(http, {
   cors: {
-    origin: "https://test3-wwwz.onrender.com",
+    origin: "https://social-network-two-iota.vercel.app",
     methods: ["GET", "POST"]
   }
 })
@@ -27,6 +27,7 @@ mongoose.set('strictQuery', false);
 const client = new MongoClient(
   'mongodb+srv://Doroshkeviches:Doroshkeviches@cluster0.reh70fb.mongodb.net/RS_Clone?retryWrites=true&w=majority',
 )
+const users = {}
 io.on('connection', (socket) => {
   socket.on('join', async (roomId) => {
     try {
