@@ -28,7 +28,7 @@ export const data = [
     {
         icon: <CameraAltOutlinedIcon />,
         title: 'Фотографии',
-        path: "/photos"
+        path: "/videoChat"
     },
     {
         icon: <SportsEsportsOutlinedIcon />,
