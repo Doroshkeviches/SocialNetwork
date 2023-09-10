@@ -6,9 +6,12 @@ const authRouter = require('./authRouter');
 const app = express();
 const http = require("http").createServer(app)
 const Chats = require('./models/Chats')
+const urlLocal = 'http://localhost:5001'
+const urlDeploy = 'https://test4-ulov.onrender.com'
+
 const io = require('socket.io')(http, {
   cors: {
-    origin: "https://test3-wwwz.onrender.com",
+    origin: urlLocal,
     methods: ["GET", "POST"]
   }
 })
