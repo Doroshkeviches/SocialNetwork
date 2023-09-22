@@ -14,13 +14,20 @@ export default function VideoChat() {
   const [remotePC, setRemotePC] = useState(null)
   const remoteVideo = useRef()
   const localVideo = useRef()
-
+  const CONFIG = {
+    iseServers: [{
+      urls: 'turn:numb.viagenie.ca',
+      credential: 'muazkh',
+      username: 'webrtc@live.com'
+    }
+    ]
+  }
   const getMedia = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: true
     })
-    const pc = new RTCPeerConnection()
+    const pc = new RTCPeerConnection(CONFIG)
     setLocalPc(pc)
     stream.getTracks().forEach((track) => pc.addTrack(track, stream))
     localVideo.current.srcObject = stream
@@ -36,7 +43,7 @@ export default function VideoChat() {
       data: offer,
     })
 
-    
+
     pc.addEventListener('icecandidate', event => {
       if (event.candidate) {
         socket.send({
@@ -50,7 +57,7 @@ export default function VideoChat() {
       audio: true,
       video: true
     })
-    const pc = new RTCPeerConnection({})
+    const pc = new RTCPeerConnection(CONFIG)
     stream.getTracks().forEach((track) => pc.addTrack(track, stream))
     localVideo.current.srcObject = stream
     await pc.setRemoteDescription(offer)
