@@ -16,9 +16,9 @@ export default function VideoChat() {
   const localVideo = useRef()
   const CONFIG = {
     iseServers: [{
-      urls: 'turn:numb.viagenie.ca',
-      credential: 'muazkh',
-      username: 'webrtc@live.com'
+      urls: 'turn:openrelay.metered.ca:80',
+      username: 'openrelayproject',
+      credentials: 'openrelayproject'
     }
     ]
   }
