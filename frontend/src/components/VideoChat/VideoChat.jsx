@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { BsPhoneVibrate } from 'react-icons/bs'
 
 import PeerConnection from '../utils/PeerConnection'
@@ -7,115 +7,119 @@ import socket from '../../socket'
 import MainWindow from './WebRTC/MainWindow'
 import CallWindow from './WebRTC/CallWindow'
 import CallModal from './WebRTC/CallModal'
-
+import useUser from '../hooks/useUser'
 export default function VideoChat() {
-  const [callFrom, setCallFrom] = useState('')
-  const [calling, setCalling] = useState(false)
+  const { author, avatar } = useUser()
+  const [localPC, setLocalPc] = useState(null)
+  const [remotePC, setRemotePC] = useState(null)
+  const remoteVideo = useRef()
+  const localVideo = useRef()
 
-  const [showModal, setShowModal] = useState(false)
-
-  const [localSrc, setLocalSrc] = useState(null)
-  const [remoteSrc, setRemoteSrc] = useState(null)
-
-  const [pc, setPc] = useState(null)
-  const [config, setConfig] = useState(null)
-  useEffect(() => {
-    socket.on('request', ({ from }) => {
-      console.log(from,'from')
-      setCallFrom(from)
-      setShowModal(true)
+  const getMedia = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true
     })
-  }, [])
+    const pc = new RTCPeerConnection()
+    setLocalPc(pc)
+    stream.getTracks().forEach((track) => pc.addTrack(track, stream))
+    localVideo.current.srcObject = stream
+    const offer = await pc.createOffer({
+      offerToReceiveAudio: true,
+      offerToReceiveVideo: true,
+    })
+    await pc.setLocalDescription(offer)
 
+
+    socket.send({
+      from: author,
+      data: offer,
+    })
+
+    pc.addEventListener('track', async (event) => {
+      console.log('event', event)
+      remoteVideo.current.srcObject = event.streams[0]
+
+    })
+    pc.addEventListener('icecandidate', event => {
+      if (event.candidate) {
+        socket.send({
+          'candidate': event.candidate
+        })
+      }
+    })
+  }
+  const remoteMedia = async (offer) => {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true
+    })
+    const pc = new RTCPeerConnection({})
+    stream.getTracks().forEach((track) => pc.addTrack(track, stream))
+    localVideo.current.srcObject = stream
+    await pc.setRemoteDescription(offer)
+    const answer = await pc.createAnswer()
+    await pc.setLocalDescription(answer)
+    socket.send({
+      from: author,
+      data: answer
+    })
+
+    pc.addEventListener('icecandidate', event => {
+      if (event.candidate) {
+        socket.send({
+          candidate: event.candidate
+        })
+      }
+    })
+  }
   useEffect(() => {
-    if (!pc) return
-    socket
-      .on('call', (data) => {
-        if (data.sdp) {
-          pc.setRemoteDescription(data.sdp)
-
-          if (data.sdp.type === 'offer') {
-            pc.createAnswer()
-          }
-        } else {
-          pc.addIceCandidate(data.candidate)
+    socket.emit('joinVideo', 'Room')
+  }, [])
+  useEffect(() => {
+    if (!localPC) return
+    socket.on('message', async mes => {
+      if (mes.data.candidate) {
+        try {
+          await localPC.addIceCandidate(mes.data.candidate)
+        } catch (error) {
         }
-      })
-      .on('end', () => finishCall(false))
-  }, [pc])
+      }
+      if (mes.data.data?.type === 'answer') {
+        const remoteDesc = new RTCSessionDescription(mes.data.data)
+        console.log(remoteDesc)
+        await localPC.setRemoteDescription(remoteDesc)
+      }
+    })
 
-  const startCall = (isCaller, remoteId, config) => {
-    console.log(config)
-    setShowModal(false)
-    setCalling(true)
-    setConfig(config)
+  }, [localPC])
+  useEffect(() => {
 
-    const _pc = new PeerConnection(remoteId)
-      .on('localStream', (stream) => {
-        console.log(_pc, 'Local stateIceCond')
+    socket.on('message',  mes => {
+      const data = mes.data
+      if (data.data?.type === 'offer' && data?.from !== author) {
+        remoteMedia(data.data)
+      } else if (data.data?.type === 'answer' && data?.from !== author) {
 
-        setLocalSrc(stream)
-      })
-      .on('remoteStream', (stream) => {
-        console.log(_pc, 'remote stateIceCond')
+      } else {
+      }
+    })
 
-        setRemoteSrc(stream)
-        setCalling(false)
-      })
-      .start(isCaller, config)
-    setPc(_pc)
-  }
-
-  const rejectCall = () => {
-    console.log(pc, 'rejected call stateIceCond')
-
-    socket.emit('end', { to: callFrom })
-
-    setShowModal(false)
-  }
-
-  const finishCall = (isCaller) => {
-    console.log(pc, 'finish call call stateIceCond')
-
-    pc.stop(isCaller)
-
-    setPc(null)
-    setConfig(null)
-
-    setCalling(false)
-    setShowModal(false)
-
-    setLocalSrc(null)
-    setRemoteSrc(null)
-  }
+  }, [])
 
   return (
     <div className='app'>
       <h1>React WebRTC</h1>
-      <MainWindow startCall={startCall} />
-      {calling && (
-        <div className='calling'>
-          <button disabled>
-            <BsPhoneVibrate />
-          </button>
-        </div>
-      )}
-      {showModal && (
-        <CallModal
-          callFrom={callFrom}
-          startCall={startCall}
-          rejectCall={rejectCall}
-        />
-      )}
-      {remoteSrc && (
-        <CallWindow
-          localSrc={localSrc}
-          remoteSrc={remoteSrc}
-          config={config}
-          mediaDevice={pc?.mediaDevice}
-          finishCall={finishCall}
-        />
-      )}
+      <button
+        onClick={() => getMedia()}
+      >Click</button>
+      <video className='remote' ref={remoteVideo} autoPlay />
+      <video
+        className='local'
+        ref={localVideo}
+        autoPlay
+        muted
+      />
     </div>
   )
 }

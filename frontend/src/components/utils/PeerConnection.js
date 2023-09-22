@@ -50,6 +50,7 @@ class PeerConnection extends Emitter {
     this.mediaDevice.stop()
     this.pc.restartIce()
     this.off()
+
     return this
   }
 
