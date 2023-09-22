@@ -8,6 +8,6 @@ const options = {
 }
 const urlLoacal = "http://localhost:5001"
 const urlDeploy = 'https://test4-ulov.onrender.com'
-const socket = io(urlDeploy, options);
+const socket = io(urlLoacal, options);
 
 export default socket;

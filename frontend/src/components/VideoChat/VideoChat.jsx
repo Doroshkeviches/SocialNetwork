@@ -36,11 +36,7 @@ export default function VideoChat() {
       data: offer,
     })
 
-    pc.addEventListener('track', async (event) => {
-      console.log('event', event)
-      remoteVideo.current.srcObject = event.streams[0]
-
-    })
+    
     pc.addEventListener('icecandidate', event => {
       if (event.candidate) {
         socket.send({
@@ -91,11 +87,20 @@ export default function VideoChat() {
         await localPC.setRemoteDescription(remoteDesc)
       }
     })
+    localPC.addEventListener('connectionstatechange', event => {
+      if (localPC.connectionState === 'connected') {
+        console.log('WORD WORD WORD')
+      }
+    })
+    localPC.addEventListener('track', async (event) => {
+      console.log('event', event)
+      remoteVideo.current.srcObject = event.streams[0]
 
+    })
   }, [localPC])
   useEffect(() => {
 
-    socket.on('message',  mes => {
+    socket.on('message', mes => {
       const data = mes.data
       if (data.data?.type === 'offer' && data?.from !== author) {
         remoteMedia(data.data)

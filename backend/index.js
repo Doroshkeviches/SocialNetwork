@@ -11,7 +11,7 @@ const urlDeploy = 'https://test4-ulov.onrender.com'
 
 const io = require('socket.io')(http, {
   cors: {
-    origin: urlDeploy,
+    origin: urlLocal,
     methods: ["GET", "POST"]
   }
 })
