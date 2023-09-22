@@ -26,6 +26,7 @@ export default function VideoChat() {
     setLocalPc(pc)
     stream.getTracks().forEach((track) => pc.addTrack(track, stream))
     localVideo.current.srcObject = stream
+    console.log('localStream', stream)
     const offer = await pc.createOffer({
       offerToReceiveAudio: true,
       offerToReceiveVideo: true,
@@ -85,7 +86,6 @@ export default function VideoChat() {
       }
       if (mes.data.data?.type === 'answer') {
         const remoteDesc = new RTCSessionDescription(mes.data.data)
-        console.log(remoteDesc)
         await localPC.setRemoteDescription(remoteDesc)
       }
     })
@@ -95,7 +95,7 @@ export default function VideoChat() {
       }
     })
     localPC.addEventListener('track', async (event) => {
-      console.log('event', event)
+      console.log('event', event.streams)
       const [remoteStream] = event.streams
       remoteVideo.current.srcObject = remoteStream
 
