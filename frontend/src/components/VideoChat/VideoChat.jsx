@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { BsPhoneVibrate } from 'react-icons/bs'
-
+import freeice from 'freeice'
 import PeerConnection from '../utils/PeerConnection'
 import socket from '../../socket'
 
@@ -15,12 +15,7 @@ export default function VideoChat() {
   const remoteVideo = useRef()
   const localVideo = useRef()
   const CONFIG = {
-    iseServers: [{
-      urls: 'turn:openrelay.metered.ca:80',
-      username: 'openrelayproject',
-      credentials: 'openrelayproject'
-    }
-    ]
+    iseServers: freeice()
   }
   const getMedia = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
