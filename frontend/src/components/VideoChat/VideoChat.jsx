@@ -95,8 +95,8 @@ export default function VideoChat() {
       }
     })
     localPC.addEventListener('track', async (event) => {
-      console.log('event', event.streams)
       const [remoteStream] = event.streams
+      console.log('event', remoteStream)
       remoteVideo.current.srcObject = remoteStream
 
     })
