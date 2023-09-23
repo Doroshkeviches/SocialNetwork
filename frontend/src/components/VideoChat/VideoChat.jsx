@@ -15,31 +15,31 @@ export default function VideoChat() {
   const remoteVideo = useRef()
   const localVideo = useRef()
   const CONFIG = {
-    iseServers: [{ url: 'stun:stun01.sipphone.com' },
-    { url: 'stun:stun.ekiga.net' },
-    { url: 'stun:stun.fwdnet.net' },
-    { url: 'stun:stun.ideasip.com' },
-    { url: 'stun:stun.iptel.org' },
-    { url: 'stun:stun.rixtelecom.se' },
-    { url: 'stun:stun.schlund.de' },
-    { url: 'stun:stun.l.google.com:19302' },
-    { url: 'stun:stun1.l.google.com:19302' },
-    { url: 'stun:stun2.l.google.com:19302' },
-    { url: 'stun:stun3.l.google.com:19302' },
-    { url: 'stun:stun4.l.google.com:19302' },
-    { url: 'stun:stunserver.org' },
-    { url: 'stun:stun.softjoys.com' },
-    { url: 'stun:stun.voiparound.com' },
-    { url: 'stun:stun.voipbuster.com' },
-    { url: 'stun:stun.voipstunt.com' },
-    { url: 'stun:stun.voxgratia.org' },
-    { url: 'stun:stun.xten.com' },
-    {
-      url: 'relay1.expressturn.com:3478',
-      password: '4QU675IjIX9JaTec',
-      username: 'efNDCJRC4P34QRYC83'
-    },
-   ]
+    iseServers: [
+      {
+        urls: "stun:stun.relay.metered.ca:80",
+      },
+      {
+        urls: "turn:a.relay.metered.ca:80",
+        username: "46c70c32170273befc020044",
+        credential: "KitYyoK8L1Ciz0wS",
+      },
+      {
+        urls: "turn:a.relay.metered.ca:80?transport=tcp",
+        username: "46c70c32170273befc020044",
+        credential: "KitYyoK8L1Ciz0wS",
+      },
+      {
+        urls: "turn:a.relay.metered.ca:443",
+        username: "46c70c32170273befc020044",
+        credential: "KitYyoK8L1Ciz0wS",
+      },
+      {
+        urls: "turn:a.relay.metered.ca:443?transport=tcp",
+        username: "46c70c32170273befc020044",
+        credential: "KitYyoK8L1Ciz0wS",
+      },
+  ],
   }
   const getMedia = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
