@@ -14,33 +14,15 @@ export default function VideoChat() {
   const [remotePC, setRemotePC] = useState(null)
   const remoteVideo = useRef()
   const localVideo = useRef()
-  const CONFIG = {
-    iseServers: [
-      {
-        urls: "stun:stun.relay.metered.ca:80",
-      },
-      {
-        urls: "turn:a.relay.metered.ca:80",
-        username: "46c70c32170273befc020044",
-        credential: "KitYyoK8L1Ciz0wS",
-      },
-      {
-        urls: "turn:a.relay.metered.ca:80?transport=tcp",
-        username: "46c70c32170273befc020044",
-        credential: "KitYyoK8L1Ciz0wS",
-      },
-      {
-        urls: "turn:a.relay.metered.ca:443",
-        username: "46c70c32170273befc020044",
-        credential: "KitYyoK8L1Ciz0wS",
-      },
-      {
-        urls: "turn:a.relay.metered.ca:443?transport=tcp",
-        username: "46c70c32170273befc020044",
-        credential: "KitYyoK8L1Ciz0wS",
-      },
-  ],
+  let CONFIG = {}
+  const start = async () => {
+    const response =
+      await fetch("https://edu-web-platform1.metered.live/api/v1/turn/credentials?apiKey=97196a8bbe9f292e6455b6396ab32b9224ed");
+      const iceServers = await response.json();
+      CONFIG.iceServers = iceServers
   }
+
+  
   const getMedia = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
@@ -98,6 +80,7 @@ export default function VideoChat() {
   }
   useEffect(() => {
     socket.emit('joinVideo', 'Room')
+    start()
   }, [])
   useEffect(() => {
     if (!localPC) return
