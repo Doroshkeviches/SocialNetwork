@@ -60,6 +60,7 @@ export default function VideoChat() {
       video: true
     })
     const pc = new RTCPeerConnection(CONFIG)
+    setLocalPc(pc) // can break app )
     stream.getTracks().forEach((track) => pc.addTrack(track, stream))
     localVideo.current.srcObject = stream
     await pc.setRemoteDescription(offer)
