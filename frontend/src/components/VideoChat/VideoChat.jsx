@@ -15,7 +15,11 @@ export default function VideoChat() {
   const remoteVideo = useRef()
   const localVideo = useRef()
   const CONFIG = {
-    iseServers: freeice()
+    iseServers: [
+      {
+        urls: ["stun3.l.google.com:19302","stun1.l.google.com:19302"]
+      }
+    ]
   }
   const getMedia = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
