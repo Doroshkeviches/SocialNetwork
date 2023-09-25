@@ -34,8 +34,9 @@ const Chat = () => {
     }, [messages])
     useEffect(() => {
         socket.emit('join', id)
-
+        
         socket.on('joined', async (roomId) => {
+            console.log('joined')
             await fetch(url + `/chats?room=${roomId}`)
                 .then(res => res.json())
                 .then(data => {
@@ -45,7 +46,7 @@ const Chat = () => {
         })
     }, [id])
     useEffect(() => {
-        socket.on('messageChat', (mes) => {   //почему оно срабатывает каждый раз а не только при загрузке страницы, ну типо сообщения приходят все гуд, но я немного не понял как это работает под капотом , будет збс если ты пояснишь))
+        socket.on('message', (mes) => {   //почему оно срабатывает каждый раз а не только при загрузке страницы, ну типо сообщения приходят все гуд, но я немного не понял как это работает под капотом , будет збс если ты пояснишь))
             console.log(mes)
             setMessages(prev => [...prev, mes])
         })
@@ -68,8 +69,6 @@ const Chat = () => {
     }
     return (
         <div className='chat'>
-            <VideoChat/>
-            
             <div className='messages-container'>
                 {loading ?
 

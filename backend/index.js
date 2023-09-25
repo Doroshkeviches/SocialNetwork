@@ -34,6 +34,7 @@ const users = {}
 io.on('connection', (socket) => {
   socket.on('join', async (roomId) => {
     try {
+      console.log('join Back')
       let result = await Chats.findOne({
         "_id": roomId
       });
@@ -65,7 +66,7 @@ io.on('connection', (socket) => {
       data
     })
   })
-  socket.on('messageChat', async ({ message, author, avatar }) => {
+  socket.on('message', async ({ message, author, avatar }) => {
     await Chats.findOneAndUpdate({ "_id": socket.activeRoom }, {
       $push: {
         "messages": {
@@ -88,7 +89,7 @@ io.on('connection', (socket) => {
 
 const start = async () => {
   try {
-    // await mongoose.connect('mongodb+srv://Doroshkeviches:Doroshkeviches@cluster0.reh70fb.mongodb.net/RS_Clone?retryWrites=true&w=majority');
+    await mongoose.connect('mongodb+srv://Doroshkeviches:Doroshkeviches@cluster0.reh70fb.mongodb.net/RS_Clone?retryWrites=true&w=majority');
     http.listen(PORT, () => console.log(`server start on port ${PORT}`));
   } catch (e) {
     console.error(e);
