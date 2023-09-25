@@ -85,7 +85,7 @@ export default function VideoChat() {
   }, [])
   useEffect(() => {
     if (!localPC) return
-    socket.on('message', async mes => {
+    socket.emit('messageVideo', async mes => {
       if (mes.data.candidate) {
         try {
           await localPC.addIceCandidate(mes.data.candidate)
@@ -111,7 +111,7 @@ export default function VideoChat() {
   }, [localPC])
   useEffect(() => {
 
-    socket.on('message', mes => {
+    socket.emit('message', mes => {
       const data = mes.data
       if (data.data?.type === 'offer' && data?.from !== author) {
         remoteMedia(data.data)

@@ -59,31 +59,31 @@ io.on('connection', (socket) => {
       console.log(e)
     }
   })
-  socket.on('message', (data) => {
+  socket.on('messageVideo', (data) => {
     console.log('messageVideo index.js')
     io.to(socket.activeRoom).emit('message', {
       data
     })
   })
-  // socket.on('message', async ({ message, author, avatar }) => {
-  //   await Chats.findOneAndUpdate({ "_id": socket.activeRoom }, {
-  //     $push: {
-  //       "messages": {
-  //         message,
-  //         author,
-  //         avatar,
-  //         date: Date.now()
-  //       }
-  //     }
-  //   })
+  socket.on('messageChat', async ({ message, author, avatar }) => {
+    await Chats.findOneAndUpdate({ "_id": socket.activeRoom }, {
+      $push: {
+        "messages": {
+          message,
+          author,
+          avatar,
+          date: Date.now()
+        }
+      }
+    })
 
-  //   io.to(socket.activeRoom).emit('message', {
-  //     message,
-  //     author,
-  //     avatar,
-  //     date: Date.now()
-  //   })
-  // })
+    io.to(socket.activeRoom).emit('message', {
+      message,
+      author,
+      avatar,
+      date: Date.now()
+    })
+  })
 })
 
 const start = async () => {
